@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: spring-boot-stats
+  profiles:
+    active:
+    include: kafka
+  scan:
+    basePackages:
+server:
+  port: 8080
+logging:
+  level:
+    root: INFO
+    com.engrz.stats: DEBUG
