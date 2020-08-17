@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 消息生产者
@@ -23,11 +25,24 @@ public class MessageProducer {
     @Test
     public void producer() {
 
-        StatsMessageDto msg1 = new StatsMessageDto();
-        msg1.setId(1L);
-        msg1.setMsg("test");
-        msg1.setDate(new Date());
-        kafkaSender.send(msg1);
+        StatsMessageDto msg = new StatsMessageDto();
+        msg.setId(1L);
+        msg.setMsg("test");
+        msg.setDate(new Date());
+        kafkaSender.send(msg);
+
+    }
+
+    @Test
+    public void producerList() {
+
+        for (int i = 0, j = 10; i < j; i++) {
+            StatsMessageDto msg = new StatsMessageDto();
+            msg.setId((long) i);
+            msg.setMsg("msg" + i);
+            msg.setDate(new Date());
+            kafkaSender.send(msg);
+        }
 
     }
 

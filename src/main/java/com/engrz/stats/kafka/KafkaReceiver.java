@@ -7,8 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+/**
+ * kafka消息接收，flink代收，这里接收者注释掉
+ */
 @Slf4j
-@Component
+//@Component
 public class KafkaReceiver {
 
     @KafkaListener(topics = {KafkaConstants.STATS_TOPIC})
