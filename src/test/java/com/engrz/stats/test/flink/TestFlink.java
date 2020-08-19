@@ -55,9 +55,25 @@ public class TestFlink {
     public void fromCollection() throws Exception {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStream<StatsMessageDto> flintstones = env.fromCollection(genMsgList());
-        DataStream<StatsMessageDto> adults = flintstones.filter(dto -> dto.getId() > 2);
+        DataStream<StatsMessageDto> data = env.fromCollection(genMsgList());
+        DataStream<StatsMessageDto> adults = data.filter(dto -> dto.getId() > 2);
         adults.print();
+
+        // 用idea生成的lambda表达式会报错
+//        data.flatMap(new FlatMapFunction<StatsMessageDto, StatsMessageDto>() {
+//            @Override
+//            public void flatMap(StatsMessageDto statsMessageDto, Collector<StatsMessageDto> collector) throws Exception {
+//                if (statsMessageDto.getPlatform().equals("ios")) {
+//                    collector.collect(statsMessageDto);
+//                }
+//            }
+//        }).print();
+
+//        data.keyBy(dto -> dto.getPlatform()).print();
+
+//        data.keyBy(StatsMessageDto::getPlatform).min("id").print();
+
+
         env.execute();
     }
 
@@ -71,9 +87,9 @@ public class TestFlink {
         for (int i = 0, j = 10; i < j; i++) {
             StatsMessageDto msg = new StatsMessageDto();
             msg.setId((long) i);
-            msg.setPlatform("android");
+            msg.setPlatform(i % 2 == 0 ? "android" : "ios");
             msg.setVersion(1);
-            msg.setType("01");
+            msg.setType(i % 2 == 0 ? "01" : "02");
             msg.setMsg("msg" + i);
             msg.setDate(new Date());
             list.add(msg);

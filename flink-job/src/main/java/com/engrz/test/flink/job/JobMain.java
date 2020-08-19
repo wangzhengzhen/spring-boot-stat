@@ -27,7 +27,7 @@ public class JobMain {
 
         List<Tuple6<Long, String, Integer, String, String, Date>> list = new ArrayList<>();
         for (int i = 0, j = 10; i < j; i++) {
-            Tuple6 msg = Tuple6.apply((long) i, "android", 1, "01", "msg" + i, new Date());
+            Tuple6 msg = Tuple6.apply((long) i, i % 2 == 0 ? "android" : "ios", 1, i % 2 == 0 ? "01" : "02", "msg" + i, new Date());
             list.add(msg);
         }
         return list;
