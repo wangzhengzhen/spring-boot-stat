@@ -2,6 +2,7 @@ package com.engrz.test.flink.job;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import scala.Tuple6;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,8 +13,8 @@ public class JobMain {
     public static void main(String[] args) throws Exception {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStream<StatsMessageDto> flintstones = env.fromCollection(genMsgList());
-        DataStream<StatsMessageDto> adults = flintstones.filter(dto -> dto.getId() > 2);
+        DataStream<Tuple6<Long, String, Integer, String, String, Date>> flintstones = env.fromCollection(genMsgList());
+        DataStream<Tuple6<Long, String, Integer, String, String, Date>> adults = flintstones.filter(tuple ->  tuple._1() > 2);
         adults.print();
         env.execute();
     }
@@ -22,17 +23,11 @@ public class JobMain {
      * 产生测试数据
      * @return
      */
-    public static List<StatsMessageDto> genMsgList() {
+    public static List<Tuple6<Long, String, Integer, String, String, Date>> genMsgList() {
 
-        List<StatsMessageDto> list = new ArrayList<>();
+        List<Tuple6<Long, String, Integer, String, String, Date>> list = new ArrayList<>();
         for (int i = 0, j = 10; i < j; i++) {
-            StatsMessageDto msg = new StatsMessageDto();
-            msg.setId((long) i);
-            msg.setPlatform("android");
-            msg.setVersion(1);
-            msg.setType("01");
-            msg.setMsg("msg" + i);
-            msg.setDate(new Date());
+            Tuple6 msg = Tuple6.apply((long) i, "android", 1, "01", "msg" + i, new Date());
             list.add(msg);
         }
         return list;
