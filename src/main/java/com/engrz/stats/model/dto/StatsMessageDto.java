@@ -21,12 +21,27 @@ public class StatsMessageDto implements Serializable {
     private Long id;
 
     /**
+     * 平台，android/ios
+     */
+    private String platform;
+
+    /**
+     * 版本
+     */
+    private Integer version;
+
+    /**
+     * 类型
+     */
+    private String type;
+
+    /**
      * 消息内容
      */
     private String msg;
 
     /**
-     * 消息时间
+     * 时间
      */
     private Date date;
 

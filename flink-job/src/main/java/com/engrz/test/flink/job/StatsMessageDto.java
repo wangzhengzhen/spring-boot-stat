@@ -14,6 +14,21 @@ public class StatsMessageDto implements Serializable {
     private Long id;
 
     /**
+     * 平台，android/ios
+     */
+    private String platform;
+
+    /**
+     * 版本
+     */
+    private Integer version;
+
+    /**
+     * 类型
+     */
+    private String type;
+
+    /**
      * 消息内容
      */
     private String msg;
@@ -47,10 +62,37 @@ public class StatsMessageDto implements Serializable {
         this.date = date;
     }
 
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "StatsMessageDto{" +
                 "id=" + id +
+                ", platform='" + platform + '\'' +
+                ", version=" + version +
+                ", type='" + type + '\'' +
                 ", msg='" + msg + '\'' +
                 ", date=" + date +
                 '}';

@@ -28,6 +28,9 @@ public class JobMain {
         for (int i = 0, j = 10; i < j; i++) {
             StatsMessageDto msg = new StatsMessageDto();
             msg.setId((long) i);
+            msg.setPlatform("android");
+            msg.setVersion(1);
+            msg.setType("01");
             msg.setMsg("msg" + i);
             msg.setDate(new Date());
             list.add(msg);

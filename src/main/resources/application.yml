@@ -3,7 +3,7 @@ spring:
     name: spring-boot-stats
   profiles:
     active:
-    include: kafka
+    include: kafka,elasticsearch
   scan:
     basePackages:
 server:

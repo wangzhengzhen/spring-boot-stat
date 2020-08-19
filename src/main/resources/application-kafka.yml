@@ -1,6 +1,6 @@
 spring:
   kafka:
-    bootstrap-servers: 10.147.20.227:9092
+    bootstrap-servers: ${KAFKA_SERVERS:127.0.0.1:9092}
     producer:
       group-id: stats-group
       retries: 0

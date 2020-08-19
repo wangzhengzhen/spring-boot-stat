@@ -9,13 +9,16 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Collector;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class TestFlink {
 
     /**
@@ -68,6 +71,9 @@ public class TestFlink {
         for (int i = 0, j = 10; i < j; i++) {
             StatsMessageDto msg = new StatsMessageDto();
             msg.setId((long) i);
+            msg.setPlatform("android");
+            msg.setVersion(1);
+            msg.setType("01");
             msg.setMsg("msg" + i);
             msg.setDate(new Date());
             list.add(msg);
