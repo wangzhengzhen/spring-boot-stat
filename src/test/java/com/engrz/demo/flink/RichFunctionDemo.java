@@ -1,4 +1,4 @@
-package com.engrz.stats.test.flink;
+package com.engrz.demo.flink;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
@@ -8,6 +8,7 @@ import org.apache.flink.api.common.typeinfo.Types;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.co.RichCoFlatMapFunction;
 import org.apache.flink.util.Collector;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +23,7 @@ import java.util.List;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Slf4j
-public class FlinkDemo {
+public class RichFunctionDemo {
 
     /**
      * 分组去重
@@ -35,7 +36,8 @@ public class FlinkDemo {
         data.keyBy(t -> t._2())
             .flatMap(new RichFlatMapFunction<Tuple6<Long, String, Integer, String, String, Date>, Object>() {
 
-                ValueState<Boolean> keyHasBeenSeen;
+                // 未调用清除，keyHasBeenSeen.clear();
+                private ValueState<Boolean> keyHasBeenSeen;
 
                 @Override
                 public void open(Configuration conf) {
@@ -49,10 +51,52 @@ public class FlinkDemo {
                         collector.collect(tuple);
                         keyHasBeenSeen.update(true);
                     } else {
-                        log.info("keyHasBeenSeen is null");
+                        log.info("keyHasBeenSeen value exist! ");
                     }
                 }
             }).print();
+
+        env.execute();
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testStreamConnect() throws Exception {
+
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+        // 这里注意两个流只有键一致的时候才能连接。 keyBy 的作用是将流数据分区，当 keyed stream 被连接时，他们必须按相同的方式分区。
+        DataStream<String> control = env.fromElements("DROP", "IGNORE").keyBy(x -> x);
+        DataStream<String> streamOfWords = env.fromElements("Apache", "DROP", "Flink", "IGNORE").keyBy(x -> x);
+
+        control.connect(streamOfWords)
+                .flatMap(new RichCoFlatMapFunction<String, String, String>() {
+
+                    private ValueState<Boolean> blocked;
+
+                    @Override
+                    public void open(Configuration config) {
+                        blocked = getRuntimeContext().getState(new ValueStateDescriptor<>("blocked", Boolean.class));
+                    }
+
+                    @Override
+                    public void flatMap1(String control_value, Collector<String> out) throws Exception {
+                        blocked.update(Boolean.TRUE);
+                    }
+
+                    @Override
+                    public void flatMap2(String data_value, Collector<String> out) throws Exception {
+                        if (blocked.value() == null) {
+                            out.collect(data_value);
+                        } else {
+                            log.info("blocked value exist! ");
+                        }
+                    }
+                })
+                .print();
 
         env.execute();
     }
