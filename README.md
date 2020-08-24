@@ -1,6 +1,7 @@
 # Spring Boot Stats
 
 ## 版本
+
 运行在java8+
 
 spring boot 2.2.9.RELEASE
