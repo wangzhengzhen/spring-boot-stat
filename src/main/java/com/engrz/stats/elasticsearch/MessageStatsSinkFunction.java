@@ -24,8 +24,7 @@ public class MessageStatsSinkFunction implements ElasticsearchSinkFunction<Strin
         log.info("data -> " + json.toString());
 
         return Requests.indexRequest()
-                .index("my-index")
-                .type("my-type")
+                .index("stats")
                 .source(json);
     }
 

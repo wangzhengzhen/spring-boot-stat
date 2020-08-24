@@ -25,11 +25,11 @@ public class FlinkElasticsearch {
     private ElasticsearchSink statsSink;
 
     @Test
-    public void saveLog() throws Exception {
+    public void stats() throws Exception {
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         DataStream<String> stream = env.addSource(flinkKafkaConsumer);
-
+        // 如果没有开启checkpoint机制的话，则失败重试策略是无法生效的
         env.enableCheckpointing(5000);
         stream.print();
 
