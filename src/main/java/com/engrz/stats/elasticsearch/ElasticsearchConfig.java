@@ -2,6 +2,7 @@ package com.engrz.stats.elasticsearch;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
@@ -19,12 +20,15 @@ import java.util.List;
 @Configuration
 public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
 
+    @Value("${spring.elasticsearch.rest.uris}")
+    private String uris;
+
     @Override
     @Bean("restClient")
     public RestHighLevelClient elasticsearchClient() {
 
         final ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo("10.147.20.200:9200")
+                .connectedTo(uris)
                 .build();
 
         return RestClients.create(clientConfiguration).rest();
@@ -40,7 +44,8 @@ public class ElasticsearchConfig extends AbstractElasticsearchConfiguration {
     public List<HttpHost> esHttpHost() {
 
         List<HttpHost> esHttphost = new ArrayList<>();
-        esHttphost.add(new HttpHost("10.147.20.200", 9200, "http"));
+        String[] split = uris.split(":");
+        esHttphost.add(new HttpHost(split[0], Integer.parseInt(split[1]), "http"));
 
         return esHttphost;
     }

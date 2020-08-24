@@ -39,6 +39,9 @@ public class MessageProducer {
         for (int i = 0, j = 10; i < j; i++) {
             StatsMessageDto msg = new StatsMessageDto();
             msg.setId((long) i);
+            msg.setPlatform(i % 2 == 0 ? "android" : "ios");
+            msg.setVersion(1);
+            msg.setType(i % 2 == 0 ? "01" : "02");
             msg.setMsg("msg" + i);
             msg.setDate(new Date());
             kafkaSender.send(msg);
