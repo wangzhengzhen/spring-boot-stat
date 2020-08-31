@@ -11,6 +11,7 @@
     <properties>
         <flink.version>1.11.1</flink.version>
         <elasticsearch.version>7.8.1</elasticsearch.version>
+        <kafka.version>2.4.0</kafka.version>
     </properties>
 
     <dependencyManagement>
@@ -41,6 +42,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka.version}</version>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>
