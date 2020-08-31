@@ -14,9 +14,9 @@ spring:
       multi-threaded: true
       username:
       password:
-        proxy:
-          host:
-          port:
+      proxy:
+        host:
+        port:
       read-timeout: 3s
     rest:
       connection-timeout: 1s
